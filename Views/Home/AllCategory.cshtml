@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Assessment_App.Models.ProductCategory>
+
+@{
+    ViewData["Title"] = "AllCategory";
+}
+
+<h1>AllCategory</h1>
+@if (ViewBag.SMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SMessage</div>
+}
+else if (ViewBag.EMessage != null)
+{
+    <div class="alert alert-warning">@ViewBag.EMessage</div>
+}
+<p>
+    <a asp-action="AddCategory">Add New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategorySerial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifyBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifyDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategorySerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifyBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifyDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

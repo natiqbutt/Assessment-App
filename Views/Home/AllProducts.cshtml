@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Assessment_App.Models.ProductView>
+
+@{
+    ViewData["Title"] = "AllProducts";
+}
+
+<h1>AllProducts</h1>
+@if (ViewBag.SMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SMessage</div>
+}
+else if (ViewBag.EMessage != null)
+{
+    <div class="alert alert-warning">@ViewBag.EMessage</div>
+}
+<link href="~/css/datatables.min.css" rel="stylesheet" />
+<p>
+    <a asp-action="AddProduct" class="btn btn-info btn-sm">Add New</a>
+</p>
+<table class="table table-responsive text-nowrap" id="tbl">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductSerial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductQuantity)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifyBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModifyDate)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductSerial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductQuantity)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifyBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifyDate)
+                    </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm">Mofify</a> |
+                    <a asp-action="DetailProduct" asp-route-id="@item.Id" class="btn btn-success btn-sm">Detail</a> |
+                    <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Delete Employee</h3>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure ? You want to delete this. </h4>
+
+                <div style="text-align:center;display:none" id="loaderDiv">
+
+                    <img src="~/Content/img/2xkV.gif" style="height:200px;width:200px" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success" onclick="DeleteProduct()">Confirm</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<input type="hidden" id="hiddenEmployeeId" />
+
+
+
+@section Scripts{
+    <script src="~/js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tbl").DataTable({
+            });
+
+        });
+    </script>
+
+    <script>
+
+        var ConfirmDelete = function (Id) {
+
+            $("#hiddenEmployeeId").val(Id);
+            $("#myModal").modal('show');
+
+        }
+
+        var DeleteProduct = function () {
+
+            var Id = $("#hiddenEmployeeId").val();
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Home/DeleteProduct",
+                data: { Id: Id },
+                success: function (result) {
+                    $("#myModal").modal("hide");
+                    $("#row_" + Id).remove();
+
+                }
+
+            })
+
+        }
+    </script>
+
+}
