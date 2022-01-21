@@ -100,6 +100,7 @@ namespace Assessment_App.Controllers
                                                from category in _dbcontext.ProductCategories.Where(m => m.Id == product.ProductCategory).DefaultIfEmpty()
                                                select new ProductView
                                                {
+                                                   Id = product.Id,
                                                    ProductName = product.ProductName,
                                                    ProductCode = product.ProductCode,
                                                    CategoryName = category.CategoryName,
@@ -154,15 +155,12 @@ namespace Assessment_App.Controllers
         //}
 
         [HttpGet]
-        public JsonResult DeleteProduct()
+        public JsonResult DeleteProduct(int Id)
         {
-            int id = Int32.Parse(Request["Id"]);
-
-            var myTableTest = _dbcontext.Products.Where(x => x.Id == id).FirstOrDefault();
+            var myTableTest = _dbcontext.Products.Where(x => x.Id == Id).FirstOrDefault();
             _dbcontext.Products.Remove(myTableTest);
-
             _dbcontext.SaveChanges();
-            return Json(true, JsonRequestBehavior.AllowGet);
+            return Json(true);
         }
 
         //[HttpGet]
